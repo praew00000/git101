@@ -1,0 +1,106 @@
+@extends('layouts.tasks')
+
+@section('content')
+
+    <!-- Bootstrap Boilerplate... -->
+
+    <div class="panel-body">
+
+        {{ $user->email }}
+
+        
+        <!-- Display Validation Errors -->
+
+        <!-- New Task Form -->
+        <form action="{{ url('task') }}" method="POST" class="form-horizontal">
+            {{ csrf_field() }}
+
+            <!-- Task Name -->
+            <div class="form-group">
+                <label for="task-name" class="col-sm-3 control-label">Task</label>
+
+                <div class="col-sm-6">
+                    <input type="text" name="name" id="task-name" class="form-control">
+                </div>
+            </div>
+
+            <!-- Add Task Button -->
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-6">
+                    <button type="submit" class="btn btn-default">
+                        <i class="fa fa-plus"></i> Add Task
+                    </button>
+                </div>
+            </div> 
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-6">
+                    <button type="submit" class="btn btn-default">
+                        <i class="fa fa-plus"></i> SAVE
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <br/>
+
+        <!-- Current Tasks -->
+    @if (count($tasks) > 0)
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Current Tasks
+            </div>
+
+            <div class="panel-body">
+                <table class="table table-striped task-table">
+
+                    <!-- Table Headings -->
+                    <thead>
+                        <th>Task</th>
+                        <th>&nbsp;</th>
+                    </thead>
+
+                    <!-- Table Body -->
+                    <tbody>
+                        @foreach ($tasks as $task)
+                            <tr>
+                                <!-- Task Name -->
+                                <td class="table-text">
+                                    <div>{{ $task->name }}</div>
+                                </td>
+                    <!-- Delete Button -->
+                                <td>
+        <form action="{{ url('task/'.$task->id) }}" method="POST">
+            {{ csrf_field() }}
+            {{ method_field('DELETE') }}
+
+            <button type="submit" id="delete-task-{{ $task->id }}" class="btn btn-danger">
+                <i class="fa fa-btn fa-trash"></i>Delete
+            </button>
+    <div class="form-group">
+        <textarea type="text" class="form-control input-lg" placeholder="Text Here" name="task"><?=$task->name?></textarea>
+    </div>
+    <div class="form-group">
+        <button class="btn btn-primary btn-lg btn-block" type="submit" value="Edit">Edit</button>
+    </div>
+</form>   
+        </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    @endif
+
+        @foreach ($tasks as $task)
+            <p>Task: {{ $task->name }} 
+                 <img src="<?php echo asset('asset/img/bin.jpg'); ?>" width="50"  height="50">
+                 <a href=’delete_name/”.$row->admin_id.””>Delete</a> 
+</p>
+        @endforeach
+
+        <br/>
+    </div>
+
+    <!-- TODO: Current Tasks -->
+@endsection
